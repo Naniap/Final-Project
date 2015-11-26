@@ -65,6 +65,17 @@ public class EditSemester extends JFrame {
 		txtYear.setColumns(10);
 		
 		JButton btnSubmit = new JButton("Submit");
+		btnSubmit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (cmbSemesters.getSelectedItem() instanceof Semester)
+				{
+					Semester s = (Semester)cmbSemesters.getSelectedItem();
+					s.setSeason(Semester.Season.valueOf(cmbSeason.getSelectedItem().toString().toUpperCase()));
+					s.setYear(Integer.parseInt(txtYear.getText()));
+					dispose();
+				}
+			}
+		});
 		btnSubmit.setBounds(119, 82, 89, 23);
 		contentPane.add(btnSubmit);
 		

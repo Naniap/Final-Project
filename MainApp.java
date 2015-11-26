@@ -615,12 +615,69 @@ public class MainApp extends JFrame {
 					edit.setVisible(true);
 				}
 				else
-					JOptionPane.showMessageDialog(contentPane, "There are no semesters to delete.");
+					JOptionPane.showMessageDialog(contentPane, "There are no semesters to edit.");
 			}
 		});
 		
 	
 		menuEdit.add(menuEditSemester);
+		
+		JMenuItem menuEditClass = new JMenuItem("Edit Class");
+		menuEditClass.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (e.getSource() == menuEditClass && cmbClasses.getSelectedItem() != null) {
+					EditClass edit = new EditClass(new Callback<Object>() {
+						public void call(Object param) {
+							editClass(param);
+						}
+						private void editClass(Object param) {
+						}
+					});
+					edit.setVisible(true);
+				}
+				else
+					JOptionPane.showMessageDialog(contentPane, "There are no classes to edit.");
+			}
+		});
+		menuEdit.add(menuEditClass);
+		
+		JMenuItem menuEditText = new JMenuItem("Edit Textbook");
+		menuEditText.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (e.getSource() == menuEditSemester && cmbSemester.getSelectedItem() != null) {
+					EditSemester edit = new EditSemester(new Callback<Object>() {
+						public void call(Object param) {
+							editSemester(param);
+						}
+						private void editSemester(Object param) {
+						}
+					});
+					edit.setVisible(true);
+				}
+				else
+					JOptionPane.showMessageDialog(contentPane, "There are no semesters to edit.");
+			}
+		});
+		menuEdit.add(menuEditText);
+		
+		JMenuItem menuEditAssign = new JMenuItem("Edit Assignment");
+		menuEditAssign.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (e.getSource() == menuEditSemester && cmbSemester.getSelectedItem() != null) {
+					EditSemester edit = new EditSemester(new Callback<Object>() {
+						public void call(Object param) {
+							editSemester(param);
+						}
+						private void editSemester(Object param) {
+						}
+					});
+					edit.setVisible(true);
+				}
+				else
+					JOptionPane.showMessageDialog(contentPane, "There are no semesters to edit.");
+			}
+		});
+		menuEdit.add(menuEditAssign);
 
 		menuDeleteSem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
