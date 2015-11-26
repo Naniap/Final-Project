@@ -11,6 +11,9 @@ import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import baseclass.Class;
+import baseclass.Semester;
+import baseclass.Professor;
 
 public class EditClass extends JFrame {
 
@@ -63,11 +66,7 @@ public class EditClass extends JFrame {
 		contentPane.add(lblProfPhoneNumber);
 		
 		JButton btnSubmit = new JButton("Submit");
-		btnSubmit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});
+
 		btnSubmit.setBounds(217, 189, 89, 23);
 		contentPane.add(btnSubmit);
 		
@@ -104,7 +103,9 @@ public class EditClass extends JFrame {
 		JComboBox cmbClass = new JComboBox();
 		cmbClass.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("first");
 				if (cmbClass.getSelectedItem() instanceof Class) {
+					System.out.println("Here");
 					Class c = (Class)cmbClass.getSelectedItem();
 					Professor p = c.getProfessor();
 					txtClassName.setText(c.getClassName());
@@ -147,5 +148,21 @@ public class EditClass extends JFrame {
 			txtProfPhone.setText(p.getPhoneNumber());
 			txtProfOffice.setText(p.getOffice());
 		}
+		
+		btnSubmit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (cmbClass.getSelectedItem() instanceof Class) {
+					Class c = (Class)cmbClass.getSelectedItem();
+					Professor p = c.getProfessor();
+					c.setClassName(txtClassName.getText());
+					p.setName(txtProfName.getText());
+					p.setEmail(txtProfEmail.getText());
+					p.setOffice(txtProfOffice.getText());
+					p.setOfficeHours(txtProfHours.getText());
+					p.setPhoneNumber(txtProfPhone.getText());
+					dispose();
+				}
+			}
+		});
 	}
 }

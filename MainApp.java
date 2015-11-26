@@ -467,9 +467,9 @@ public class MainApp extends JFrame {
 					for (int i = 0; i < ((Semester)o).getClassName().size(); i++) {
 						dcmClasses.addElement(((Semester)o).getClassName().get(i));
 					}
-					lblTotGPA.setText(Double.toString(calcTotGPA(semesters)));
-					lblGPA.setText(Double.toString(calcGPA(cmbClasses)));
-					cmbClasses.setModel(dcmClasses);
+						lblTotGPA.setText(Double.toString(calcTotGPA(semesters)));
+						lblGPA.setText(Double.toString(calcGPA(cmbClasses)));
+						cmbClasses.setModel(dcmClasses);
 					}
 				else {
 					txtTxtName.setText("");
@@ -644,18 +644,17 @@ public class MainApp extends JFrame {
 		JMenuItem menuEditText = new JMenuItem("Edit Textbook");
 		menuEditText.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (e.getSource() == menuEditSemester && cmbSemester.getSelectedItem() != null) {
-					EditSemester edit = new EditSemester(new Callback<Object>() {
+				if (e.getSource() == menuEditText && cmbClasses.getSelectedItem() != null) {
+					EditTextBook edit = new EditTextBook(new Callback<Object>() {
 						public void call(Object param) {
-							editSemester(param);
-						}
-						private void editSemester(Object param) {
+							cmbClasses.setSelectedItem(cmbClasses.getSelectedItem());
+							cmbTxtBook.setSelectedItem(cmbTxtBook.getSelectedItem());
 						}
 					});
 					edit.setVisible(true);
 				}
 				else
-					JOptionPane.showMessageDialog(contentPane, "There are no semesters to edit.");
+					JOptionPane.showMessageDialog(contentPane, "There are no textbooks to edit.");
 			}
 		});
 		menuEdit.add(menuEditText);
@@ -663,18 +662,19 @@ public class MainApp extends JFrame {
 		JMenuItem menuEditAssign = new JMenuItem("Edit Assignment");
 		menuEditAssign.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (e.getSource() == menuEditSemester && cmbSemester.getSelectedItem() != null) {
-					EditSemester edit = new EditSemester(new Callback<Object>() {
+				if (e.getSource() == menuEditAssign && cmbSemester.getSelectedItem() != null) {
+					EditAssignment edit = new EditAssignment(new Callback<Object>() {
 						public void call(Object param) {
-							editSemester(param);
-						}
-						private void editSemester(Object param) {
+							cmbClasses.setSelectedItem(cmbClasses.getSelectedItem()); // refresh info
+							cmbAssign.setSelectedItem(cmbAssign.getSelectedItem()); // refresh info
+							lblTotGPA.setText(Double.toString(calcTotGPA(semesters)));
+							lblGPA.setText(Double.toString(calcGPA(cmbClasses)));
 						}
 					});
 					edit.setVisible(true);
 				}
 				else
-					JOptionPane.showMessageDialog(contentPane, "There are no semesters to edit.");
+					JOptionPane.showMessageDialog(contentPane, "There are no assignments to edit.");
 			}
 		});
 		menuEdit.add(menuEditAssign);
