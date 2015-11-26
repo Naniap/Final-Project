@@ -23,7 +23,7 @@ public class DeleteSemester extends JFrame {
 	public DeleteSemester(final Callback<Object> callback) {
 		DefaultComboBoxModel dcm = MainApp.getSemesters();
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 234, 140);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -47,7 +47,7 @@ public class DeleteSemester extends JFrame {
 				}
 			}
 		});
-		btnNewButton.setBounds(335, 227, 89, 23);
+		btnNewButton.setBounds(119, 67, 89, 23);
 		contentPane.add(btnNewButton);
 	}
 }

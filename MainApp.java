@@ -310,12 +310,12 @@ public class MainApp extends JFrame {
 		lblAssignments.setBounds(296, 204, 81, 14);
 		contentPane.add(lblAssignments);
 		
-		JLabel lblGpa = new JLabel("GPA:");
-		lblGpa.setBounds(492, 5, 46, 14);
+		JLabel lblGpa = new JLabel("Semester GPA:");
+		lblGpa.setBounds(476, 11, 89, 14);
 		contentPane.add(lblGpa);
 		
 		JLabel lblGPA = new JLabel("");
-		lblGPA.setBounds(548, 5, 46, 14);
+		lblGPA.setBounds(591, 11, 46, 14);
 		contentPane.add(lblGPA);	
 		
 		
@@ -344,7 +344,7 @@ public class MainApp extends JFrame {
 					txtAssignDate.setText(a.getAssignedDate());
 					txtDueDate.setText(a.getDueDate());
 					txtGrade.setText(Double.toString(a.getGrade()));
-					lblGPA.setText(Double.toString(calcGPA(cmbAssign)));
+					//lblGPA.setText(Double.toString(calcGPA(cmbClasses)));
 				}
 				else {
 					txtAssignName.setText("");
@@ -352,7 +352,7 @@ public class MainApp extends JFrame {
 					txtAssignDate.setText("");
 					txtDueDate.setText("");
 					txtGrade.setText("");
-					lblGPA.setText(Double.toString(calcGPA(cmbAssign)));
+					//lblGPA.setText(Double.toString(calcGPA(cmbClasses)));
 				}
 					
 			}
@@ -446,14 +446,29 @@ public class MainApp extends JFrame {
 			}
 		});
 		lblGPA.setText(Double.toString(calcGPA(cmbClasses)));
+		
+		JLabel lblTotalGpa = new JLabel("Total GPA: ");
+		lblTotalGpa.setBounds(476, 39, 89, 14);
+		contentPane.add(lblTotalGpa);
+		
+		JLabel lblTotGPA = new JLabel("0.0");
+		lblTotGPA.setBounds(591, 39, 46, 14);
+		lblTotGPA.setText(Double.toString(calcTotGPA(semesters)));
+		contentPane.add(lblTotGPA);
+		
+		
 		cmbSemester.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (e.getSource() == cmbSemester && !cmbSemester.getSelectedItem().equals("")) {
+				if (e.getSource() == cmbSemester && !cmbSemester.getSelectedItem().equals("") && cmbSemester.getSelectedItem() != null) {
 					dcmClasses.removeAllElements();
+					dcmAssignments.removeAllElements();
+					dcmTextBooks.removeAllElements();
 					Object o = cmbSemester.getSelectedItem();
 					for (int i = 0; i < ((Semester)o).getClassName().size(); i++) {
 						dcmClasses.addElement(((Semester)o).getClassName().get(i));
 					}
+					lblTotGPA.setText(Double.toString(calcTotGPA(semesters)));
+					lblGPA.setText(Double.toString(calcGPA(cmbClasses)));
 					cmbClasses.setModel(dcmClasses);
 					}
 				else {
@@ -474,6 +489,9 @@ public class MainApp extends JFrame {
 					txtGrade.setText("");
 					dcmTextBooks.removeAllElements();
 					dcmClasses.removeAllElements();
+					dcmAssignments.removeAllElements();
+					lblTotGPA.setText(Double.toString(calcTotGPA(semesters)));
+					lblGPA.setText(Double.toString(calcGPA(cmbClasses)));
 				}
 			}
 		});
@@ -496,7 +514,8 @@ public class MainApp extends JFrame {
 							Assignment a = new Assignment(param.get(0), param.get(1), param.get(2), Double.parseDouble(param.get(3)), Assignment.AssignmentType.valueOf(param.get(4)));
 							c.getAssignments().add(a);
 							dcmAssignments.addElement(a);
-							lblGPA.setText(Double.toString(calcGPA(cmbAssign)));
+							lblGPA.setText(Double.toString(calcGPA(cmbClasses)));
+							lblTotGPA.setText(Double.toString(calcTotGPA(semesters)));
 						}
 					});
 					assignment.setVisible(true);
@@ -514,7 +533,7 @@ public class MainApp extends JFrame {
 		JMenuItem menuDeleteClass = new JMenuItem("Delete Class");
 		menuDeleteClass.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (e.getSource() == menuDeleteClass) {
+				if (e.getSource() == menuDeleteClass && cmbClasses.getSelectedItem() != null) {
 					DeleteClass delClass = new DeleteClass(new Callback<Object>() {
 						public void call(Object param) {
 							deleteClass(param);
@@ -522,11 +541,14 @@ public class MainApp extends JFrame {
 						private void deleteClass(Object param) {
 							dcmClasses.removeElement(param);
 							((Semester)cmbSemester.getSelectedItem()).getClassName().remove(param);
-							lblGPA.setText(Double.toString(calcGPA(cmbAssign)));
+							lblGPA.setText(Double.toString(calcGPA(cmbClasses)));
+							lblTotGPA.setText(Double.toString(calcTotGPA(semesters)));
 						}
 					});
 					delClass.setVisible(true);
 				}
+				else
+					JOptionPane.showMessageDialog(contentPane, "There are no classes to delete.");
 			}
 		});
 		mnRemove.add(menuDeleteClass);
@@ -534,7 +556,7 @@ public class MainApp extends JFrame {
 		JMenuItem menuAssignment = new JMenuItem("Delete Assignment");
 		menuAssignment.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (e.getSource() == menuAssignment) {
+				if (e.getSource() == menuAssignment && cmbAssign.getSelectedItem() != null) {
 					DeleteAssignment delClass = new DeleteAssignment(new Callback<Object>() {
 						public void call(Object param) {
 							deleteAssignment(param);
@@ -542,11 +564,13 @@ public class MainApp extends JFrame {
 						private void deleteAssignment(Object param) {
 							((Class)cmbClasses.getSelectedItem()).getAssignments().remove(param);
 							dcmAssignments.removeElement(param);
-							lblGPA.setText(Double.toString(calcGPA(cmbAssign)));
+							lblGPA.setText(Double.toString(calcGPA(cmbClasses)));
 						}
 					});
 					delClass.setVisible(true);
 				}
+				else
+					JOptionPane.showMessageDialog(contentPane, "There are no assignments to delete.");
 			}
 		});
 		
@@ -555,7 +579,7 @@ public class MainApp extends JFrame {
 		JMenuItem menuDeleteText = new JMenuItem("Delete Textbook");
 		menuDeleteText.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (e.getSource() == menuDeleteText) {
+				if (e.getSource() == menuDeleteText && cmbTxtBook.getSelectedItem() != null) {
 					DeleteTextBook delClass = new DeleteTextBook(new Callback<Object>() {
 						public void call(Object param) {
 							deleteTextBook(param);
@@ -563,41 +587,87 @@ public class MainApp extends JFrame {
 						private void deleteTextBook(Object param) {
 							((Class)cmbClasses.getSelectedItem()).getTextBooks().remove(param);
 							dcmTextBooks.removeElement(param);
-							lblGPA.setText(Double.toString(calcGPA(cmbAssign)));
+							lblGPA.setText(Double.toString(calcGPA(cmbClasses)));
 						}
 					});
 					delClass.setVisible(true);
 				}
+				else
+					JOptionPane.showMessageDialog(contentPane, "There are no textbooks to delete.");
 			}
 		});
 		mnRemove.add(menuDeleteText);
+		
+		JMenu menuEdit = new JMenu("Edit");
+		menuBar.add(menuEdit);
+		
+		JMenuItem menuEditSemester = new JMenuItem("Edit Semester");
+		menuEditSemester.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (e.getSource() == menuEditSemester && cmbSemester.getSelectedItem() != null) {
+					EditSemester edit = new EditSemester(new Callback<Object>() {
+						public void call(Object param) {
+							editSemester(param);
+						}
+						private void editSemester(Object param) {
+						}
+					});
+					edit.setVisible(true);
+				}
+				else
+					JOptionPane.showMessageDialog(contentPane, "There are no semesters to delete.");
+			}
+		});
+		
+	
+		menuEdit.add(menuEditSemester);
 
 		menuDeleteSem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (e.getSource() == menuDeleteSem) {
+				if (e.getSource() == menuDeleteSem && cmbSemester.getSelectedItem() != null) {
 					DeleteSemester delSem = new DeleteSemester(new Callback<Object>() {
 						public void call(Object param) {
 							deleteSemester(param);
 						}
 						private void deleteSemester(Object param) {
-							System.out.println(cmbSemester.getSelectedItem().toString());
-							System.out.println(((Semester)param));
 							dcmSemester.removeElement(param);
-							lblGPA.setText(Double.toString(calcGPA(cmbAssign)));
+							lblGPA.setText(Double.toString(calcGPA(cmbClasses)));
 						}
 					});
 					delSem.setVisible(true);
 				}
+				else
+					JOptionPane.showMessageDialog(contentPane, "There are no semesters to delete.");
 			}
 		});
 		
 	}
 	public double calcGPA(JComboBox cb) {
 		int count = 0;
-		int sum = 0;
+		double sum = 0;
 		for (int i = 0; i < cb.getItemCount(); i++) {
-			sum += ((Assignment)cb.getItemAt(i)).getGrade();
-			count++;
+			Class c = (Class)cb.getItemAt(i);
+			ArrayList<Assignment> a = c.getAssignments();
+			for (Assignment assign : a) {
+				sum += assign.getGrade();
+				count++;
+			}
+		}
+		if (sum == 0 || count == 0)
+			return 0.0;
+		return sum / count;
+	}
+	public double calcTotGPA(ArrayList<Semester> s) {
+		double sum = 0;
+		int count = 0;
+		for (Semester sem : s) {
+			ArrayList<Class> classes = sem.getClassName();
+			for (Class c : classes) {
+				for (Assignment a : c.getAssignments()) {
+					sum += a.getGrade();
+					count++;
+				}
+			}
 		}
 		if (sum == 0 || count == 0)
 			return 0.0;

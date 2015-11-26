@@ -117,7 +117,8 @@ public class CreateClass extends JFrame {
 					data.add(txtProfOffice.getText());
 					data.add(txtProfOfficeHours.getText());
 					data.add(txtProfPhone.getText());
-					callback.call(data);
+					if (cmbSemester.getSelectedItem() != null && !cmbSemester.getSelectedItem().equals(""))
+						callback.call(data);
 					dispose();
 				}
 			}

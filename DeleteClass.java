@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+import javax.swing.JLabel;
 
 public class DeleteClass extends JFrame {
 
@@ -24,7 +25,7 @@ public class DeleteClass extends JFrame {
 		DefaultComboBoxModel dcmClasses = MainApp.getClasses();
 		DefaultComboBoxModel dcmSemester = MainApp.getSemesters();
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 306, 151);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -32,12 +33,12 @@ public class DeleteClass extends JFrame {
 		
 		JComboBox cmbClasses = new JComboBox();
 		cmbClasses.setModel(dcmClasses);
-		cmbClasses.setBounds(204, 11, 186, 20);
+		cmbClasses.setBounds(80, 47, 186, 20);
 		contentPane.add(cmbClasses);
 		
 		JComboBox cmbSemester = new JComboBox();
 		cmbSemester.setModel(dcmSemester);
-		cmbSemester.setBounds(10, 11, 184, 20);
+		cmbSemester.setBounds(80, 11, 184, 20);
 		contentPane.add(cmbSemester);
 		JButton btnNewButton = new JButton("Delete");
 		btnNewButton.addActionListener(new ActionListener() {
@@ -53,7 +54,15 @@ public class DeleteClass extends JFrame {
 			}
 		});
 		
-		btnNewButton.setBounds(335, 227, 89, 23);
+		btnNewButton.setBounds(191, 78, 89, 23);
 		contentPane.add(btnNewButton);
+		
+		JLabel lblSemester = new JLabel("Semester:");
+		lblSemester.setBounds(10, 14, 76, 14);
+		contentPane.add(lblSemester);
+		
+		JLabel lblClass = new JLabel("Class:");
+		lblClass.setBounds(10, 50, 76, 14);
+		contentPane.add(lblClass);
 	}
 }
