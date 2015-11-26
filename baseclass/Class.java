@@ -1,7 +1,12 @@
 package baseclass;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Class {
+public class Class implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2338921038578165349L;
 	private String className;
 	private ArrayList<TextBook> textBooks;
 	private ArrayList<Assignment> assignments;

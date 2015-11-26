@@ -1,6 +1,12 @@
 package baseclass;
 
-public class Professor {
+import java.io.Serializable;
+
+public class Professor implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7877224401425966336L;
 	private String name;
 	private String email;
 	private String office;

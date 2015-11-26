@@ -103,10 +103,8 @@ public class EditClass extends JFrame {
 		JComboBox cmbClass = new JComboBox();
 		cmbClass.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("first");
 				if (cmbClass.getSelectedItem() instanceof Class) {
-					System.out.println("Here");
-					Class c = (Class)cmbClass.getSelectedItem();
+					Class c = ((Class)cmbClass.getSelectedItem());
 					Professor p = c.getProfessor();
 					txtClassName.setText(c.getClassName());
 					txtProfName.setText(p.getName());
@@ -126,10 +124,6 @@ public class EditClass extends JFrame {
 		contentPane.add(lblClassSelection);
 		
 		JComboBox cmbSemester = new JComboBox();
-		cmbSemester.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		cmbSemester.setBounds(329, 33, 145, 20);
 		contentPane.add(cmbSemester);
 		cmbSemester.setModel(dcmSemester);
@@ -160,6 +154,7 @@ public class EditClass extends JFrame {
 					p.setOffice(txtProfOffice.getText());
 					p.setOfficeHours(txtProfHours.getText());
 					p.setPhoneNumber(txtProfPhone.getText());
+					callback.call("");
 					dispose();
 				}
 			}

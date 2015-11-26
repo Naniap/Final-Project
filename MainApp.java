@@ -21,6 +21,10 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
@@ -89,6 +93,27 @@ public class MainApp extends JFrame {
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
+		
+		JMenu menuFile = new JMenu("File");
+		menuBar.add(menuFile);
+		
+		JMenuItem menuSave = new JMenuItem("Save");
+		menuSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				save();
+				System.out.println("Saving..");
+			}
+		});
+		menuFile.add(menuSave);
+		
+		JMenuItem menuLoad = new JMenuItem("Load");
+		menuFile.add(menuLoad);
+		menuLoad.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				load();
+				System.out.println("Loading");
+			}
+		});
 		
 		JMenu menuCreate = new JMenu("Create");
 		menuBar.add(menuCreate);
@@ -607,9 +632,6 @@ public class MainApp extends JFrame {
 				if (e.getSource() == menuEditSemester && cmbSemester.getSelectedItem() != null) {
 					EditSemester edit = new EditSemester(new Callback<Object>() {
 						public void call(Object param) {
-							editSemester(param);
-						}
-						private void editSemester(Object param) {
 						}
 					});
 					edit.setVisible(true);
@@ -628,7 +650,8 @@ public class MainApp extends JFrame {
 				if (e.getSource() == menuEditClass && cmbClasses.getSelectedItem() != null) {
 					EditClass edit = new EditClass(new Callback<Object>() {
 						public void call(Object param) {
-							editClass(param);
+							cmbSemester.setSelectedItem(cmbSemester.getSelectedItem()); // refresh info
+							cmbClasses.setSelectedItem(cmbClasses.getSelectedItem()); // refresh info
 						}
 						private void editClass(Object param) {
 						}
@@ -678,7 +701,8 @@ public class MainApp extends JFrame {
 			}
 		});
 		menuEdit.add(menuEditAssign);
-
+		
+	
 		menuDeleteSem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == menuDeleteSem && cmbSemester.getSelectedItem() != null) {
@@ -729,5 +753,53 @@ public class MainApp extends JFrame {
 		if (sum == 0 || count == 0)
 			return 0.0;
 		return sum / count;
+	}
+	public void save () {
+		try{  // Catch errors in I/O if necessary.
+			// Open a file to write to, named SavedObj.sav.
+			FileOutputStream saveFile=new FileOutputStream("SaveObj.sav");
+
+			// Create an ObjectOutputStream to put objects into save file.
+			ObjectOutputStream save = new ObjectOutputStream(saveFile);
+
+			// Now we do the save.
+			save.writeObject(semesters);
+
+			// Close the file.
+			save.close(); // This also closes saveFile.
+		}
+		catch(Exception exc){
+			exc.printStackTrace(); // If there was an error, print the info.
+		}
+	}
+	
+	public void load() {
+		try{
+			System.out.println("Loading...");
+			// Open file to read from, named SavedObj.sav.
+			FileInputStream saveFile = new FileInputStream("SaveObj.sav");
+
+			// Create an ObjectInputStream to get objects from save file.
+			ObjectInputStream save = new ObjectInputStream(saveFile);
+
+			// Now we do the restore.
+			// readObject() returns a generic Object, we cast those back
+			// into their original class type.
+			// For primitive types, use the corresponding reference class.
+			ArrayList<Semester> s = (ArrayList<Semester>)save.readObject();	
+			semesters = s;
+			dcmSemester.removeAllElements();
+			dcmSemester.addElement("");
+			for (Semester z : s) {
+				dcmSemester.addElement(z);
+			}
+			cmbSemester.setModel(dcmSemester);
+			// Close the file.
+			save.close(); // This also closes saveFile.
+			}
+			catch(Exception exc){
+			exc.printStackTrace(); // If there was an error, print the info.
+			}
+
 	}
 }

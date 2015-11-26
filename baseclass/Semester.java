@@ -1,7 +1,12 @@
 package baseclass;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Semester {
+public class Semester implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5379177481588314773L;
 	public enum Season {
 		SPRING,
 		SUMMER,

@@ -1,7 +1,12 @@
 package baseclass;
+import java.io.Serializable;
 import java.util.Date;
 
-public class Assignment {
+public class Assignment implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2565432062078001763L;
 	public enum AssignmentType {
 		HW,
 		INCLASS,
