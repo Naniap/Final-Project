@@ -74,7 +74,7 @@ public class DeleteAssignment extends JFrame {
 		contentPane.add(lblClass);
 		
 		JLabel lblAssignment = new JLabel("Assignment:");
-		lblAssignment.setBounds(8, 86, 70, 14);
+		lblAssignment.setBounds(8, 86, 102, 14);
 		contentPane.add(lblAssignment);
 	}
 }

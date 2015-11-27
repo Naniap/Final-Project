@@ -3,6 +3,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import baseclass.Assignment;
 import baseclass.Class;
@@ -21,6 +22,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
@@ -30,6 +32,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 
 public class MainApp extends JFrame {
 	private JPanel contentPane;
@@ -100,21 +103,51 @@ public class MainApp extends JFrame {
 		JMenu menuFile = new JMenu("File");
 		menuBar.add(menuFile);
 		
+		JFileChooser fileSave = new JFileChooser(".");
+		
 		JMenuItem menuSave = new JMenuItem("Save");
 		menuSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				save();
 				System.out.println("Saving..");
+				fileSave.setDialogTitle("Specify a file to save");  
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("Object Save File", "sav");
+				fileSave.setFileFilter(filter);
+				fileSave.setAcceptAllFileFilterUsed(false); // Don't allow just any file to be selected.
+				int returnVal = fileSave.showSaveDialog(contentPane);
+		        if (returnVal == JFileChooser.APPROVE_OPTION) {
+					System.out.println("Saving...");
+		            File file = fileSave.getSelectedFile();
+		            save(file.getAbsolutePath());
+		        } else {
+		        	//JOptionPane.showMessageDialog(contentPane, "You selected to not open a save file.");
+		        	// Don't know if this would be too obnoxious if I displayed a pop-up message, so rather just write to console.
+		        	System.out.println("Not saving any file...");
+		        }
 			}
 		});
 		menuFile.add(menuSave);
 		
 		JMenuItem menuLoad = new JMenuItem("Load");
 		menuFile.add(menuLoad);
+		
+		JFileChooser fileChooser = new JFileChooser("."); //Load current directory
+		
 		menuLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				load();
-				System.out.println("Loading...");
+				// Code from oracle docs
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("Object Save File", "sav");
+				fileChooser.setFileFilter(filter);
+				fileChooser.setAcceptAllFileFilterUsed(false); // Don't allow just any file to be selected.
+				int returnVal = fileChooser.showOpenDialog(contentPane);
+		        if (returnVal == JFileChooser.APPROVE_OPTION) {
+					System.out.println("Loading...");
+		            File file = fileChooser.getSelectedFile();
+		            load(file.getAbsolutePath());
+		        } else {
+		        	//JOptionPane.showMessageDialog(contentPane, "You selected to not open a save file.");
+		        	// Don't know if this would be too obnoxious if I displayed a pop-up message, so rather just write to console.
+		        	System.out.println("Not opening any file...");
+		        }
 			}
 		});
 		
@@ -487,6 +520,8 @@ public class MainApp extends JFrame {
 		
 		cmbSemester.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if (cmbSemester.getSelectedItem() == null) //sanity check
+					return;
 				if (e.getSource() == cmbSemester && !cmbSemester.getSelectedItem().equals("") && cmbSemester.getSelectedItem() != null) {
 					dcmClasses.removeAllElements();
 					dcmAssignments.removeAllElements();
@@ -761,37 +796,23 @@ public class MainApp extends JFrame {
 			return 0.0;
 		return sum / count;
 	}
-	public void save () {
-		try{  // Catch errors in I/O if necessary.
-			// Open a file to write to, named SavedObj.sav.
-			FileOutputStream saveFile=new FileOutputStream("SaveObj.sav");
-
-			// Create an ObjectOutputStream to put objects into save file.
+	public void save (String fileName) {
+		try{  
+			if (!fileName.endsWith(".sav")) // checks fo .sav exntesion
+				fileName += ".sav";
+			FileOutputStream saveFile = new FileOutputStream(fileName);
 			ObjectOutputStream save = new ObjectOutputStream(saveFile);
-
-			// Now we do the save.
 			save.writeObject(semesters);
-
-			// Close the file.
-			save.close(); // This also closes saveFile.
+			save.close(); 
 		}
-		catch(Exception exc){
-			exc.printStackTrace(); // If there was an error, print the info.
+		catch(Exception e){
+			e.printStackTrace(); 
 		}
 	}
-	
-	public void load() {
-		try{
-			// Open file to read from, named SavedObj.sav.
-			FileInputStream saveFile = new FileInputStream("SaveObj.sav");
-
-			// Create an ObjectInputStream to get objects from save file.
+	public void load(String fileName) {
+		try {
+			FileInputStream saveFile = new FileInputStream(fileName);
 			ObjectInputStream save = new ObjectInputStream(saveFile);
-
-			// Now we do the restore.
-			// readObject() returns a generic Object, we cast those back
-			// into their original class type.
-			// For primitive types, use the corresponding reference class.
 			ArrayList<Semester> s = (ArrayList<Semester>)save.readObject();	
 			semesters = s;
 			dcmSemester.removeAllElements();
@@ -800,12 +821,10 @@ public class MainApp extends JFrame {
 				dcmSemester.addElement(z);
 			}
 			cmbSemester.setModel(dcmSemester);
-			// Close the file.
-			save.close(); // This also closes saveFile.
-			}
-			catch(Exception exc){
-			exc.printStackTrace(); // If there was an error, print the info.
-			}
-
+			save.close(); 
+		}
+		catch(Exception e){
+			e.printStackTrace(); 
+		}
 	}
 }
