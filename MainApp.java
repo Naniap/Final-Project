@@ -34,6 +34,9 @@ import javax.swing.JButton;
 public class MainApp extends JFrame {
 	private JPanel contentPane;
 	private JComboBox<Semester> cmbSemester;
+	private JComboBox<Semester> cmbClasses;
+	private JComboBox<Semester> cmbAssign;
+	private JComboBox<Semester> cmbTxtBook;
 	private ArrayList<Semester> semesters = new ArrayList<>();
 	private static DefaultComboBoxModel dcmSemester = new DefaultComboBoxModel<>();	
 	private static DefaultComboBoxModel dcmClasses = new DefaultComboBoxModel<>();
@@ -111,7 +114,7 @@ public class MainApp extends JFrame {
 		menuLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				load();
-				System.out.println("Loading");
+				System.out.println("Loading...");
 			}
 		});
 		
@@ -146,7 +149,7 @@ public class MainApp extends JFrame {
 		contentPane.setLayout(null);
 		
 		
-		JComboBox cmbTxtBook = new JComboBox();
+		cmbTxtBook = new JComboBox();
 		cmbTxtBook.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == cmbTxtBook && cmbTxtBook.getSelectedItem() != null) {
@@ -230,7 +233,7 @@ public class MainApp extends JFrame {
 		cmbSemester = new JComboBox();
 		cmbSemester.setBounds(5, 8, 212, 20);
 		contentPane.add(cmbSemester);
-		JComboBox cmbClasses = new JComboBox();		
+		cmbClasses = new JComboBox();		
 
 		
 		JMenuItem menuCreateTextbook = new JMenuItem("Create Textbook");
@@ -344,7 +347,7 @@ public class MainApp extends JFrame {
 		contentPane.add(lblGPA);	
 		
 		
-		JComboBox cmbAssign = new JComboBox();
+		cmbAssign = new JComboBox();
 		cmbAssign.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == cmbAssign && cmbAssign.getSelectedItem() != null) {
@@ -493,9 +496,13 @@ public class MainApp extends JFrame {
 						dcmClasses.addElement(((Semester)o).getClassName().get(i));
 					}
 						lblTotGPA.setText(Double.toString(calcTotGPA(semesters)));
-						lblGPA.setText(Double.toString(calcGPA(cmbClasses)));
 						cmbClasses.setModel(dcmClasses);
+						lblGPA.setText(Double.toString(calcGPA(cmbClasses)));
+						cmbClasses.setSelectedItem(cmbClasses.getSelectedItem());
+						cmbAssign.setSelectedItem(cmbAssign.getSelectedItem());
+						cmbTxtBook.setSelectedItem(cmbTxtBook.getSelectedItem());
 					}
+				
 				else {
 					txtTxtName.setText("");
 					txtTxtAuth.setText("");
@@ -775,7 +782,6 @@ public class MainApp extends JFrame {
 	
 	public void load() {
 		try{
-			System.out.println("Loading...");
 			// Open file to read from, named SavedObj.sav.
 			FileInputStream saveFile = new FileInputStream("SaveObj.sav");
 
