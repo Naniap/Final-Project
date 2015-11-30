@@ -24,11 +24,8 @@ public class CreateClass extends JFrame {
 	private JTextField txtProfPhone;
 
 	/**
-	 * Launch the application.
-	 */
-
-	/**
-	 * Create the frame.
+	 * This class is responsible for creating a class, and is responsible for passing information to the main frame to create an object
+	 * @param callback creates a callback to the main frame if needed to pass information forward
 	 */
 	public CreateClass(final Callback<ArrayList<String>> callback) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

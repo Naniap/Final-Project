@@ -19,7 +19,9 @@ public class DeleteAssignment extends JFrame {
 	private JPanel contentPane;
 
 	/**
-	 * Create the frame.
+	 * This class is responsible for deleting an assignment
+	 * @param callback creates a callback to the main frame if needed to pass information forward
+	 * 
 	 */
 	public DeleteAssignment(final Callback<Object> callback) {
 		DefaultComboBoxModel dcmClasses = MainApp.getClasses();

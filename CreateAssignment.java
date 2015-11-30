@@ -24,7 +24,8 @@ public class CreateAssignment extends JFrame {
 	private JTextField txtAssignDue;
 	private JTextField txtAssignGrade;
 	/**
-	 * Create the frame.
+	 * This class is responsible for creating an assignment, and is responsible for passing information to the main frame to create an object
+	 * @param callback creates a callback to the main frame if needed to pass information forward
 	 */
 	public CreateAssignment(final Callback<ArrayList<String>> callback) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

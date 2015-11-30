@@ -25,7 +25,9 @@ public class EditAssignment extends JFrame {
 	private JLabel lblSemesterSelection;
 
 	/**
-	 * Create the frame.
+	 * This class is responsible for editing an assignment
+	 * @param callback creates a callback to the main frame if needed to pass information forward
+	 * 
 	 */
 	public EditAssignment(final Callback<Object> callback) {
 		DefaultComboBoxModel dcmClasses = MainApp.getClasses();

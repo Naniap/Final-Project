@@ -18,7 +18,9 @@ public class DeleteSemester extends JFrame {
 	private JPanel contentPane;
 
 	/**
-	 * Create the frame.
+	 * This class is responsible for deleting a semester
+	 * @param callback creates a callback to the main frame if needed to pass information forward
+	 * 
 	 */
 	public DeleteSemester(final Callback<Object> callback) {
 		DefaultComboBoxModel dcm = MainApp.getSemesters();

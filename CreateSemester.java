@@ -19,26 +19,9 @@ import java.awt.event.ActionEvent;
 public class CreateSemester extends JFrame {
 
 	private JPanel contentPane;
-
 	/**
-	 * Launch the application.
-	 */
-	/*
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					CreateSemester frame = new CreateSemester();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-*/
-	/**
-	 * Create the frame.
+	 * This class is responsible for creating a semester, and is responsible for passing information to the main frame to create an object
+	 * @param callback creates a callback to the main frame if needed to pass information forward
 	 */
 	public CreateSemester(final Callback<ArrayList<String>> callback) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

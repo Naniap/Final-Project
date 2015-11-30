@@ -28,12 +28,20 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 
+/**
+ * This is the main application where most of the logic is done, this frame acts as a receiving point, and uses DefaultComboBoxModels to 
+ * store objects as statics and pass them to other classes where needed. This design paradigm allowed me to simply add and remove objects
+ * where necessary
+ * @author Michael Coache
+ * 
+ */
 public class MainApp extends JFrame {
 	private JPanel contentPane;
 	private JComboBox<Semester> cmbSemester;
@@ -60,6 +68,8 @@ public class MainApp extends JFrame {
 	private JTextField txtAssignDate;
 	private JTextField txtDueDate;
 	private JTextField txtGrade;
+	private JLabel lblTotGPA;
+	private JLabel lblGPA;
 	public static DefaultComboBoxModel getSemesters() {
 		return dcmSemester;
 	}
@@ -72,13 +82,12 @@ public class MainApp extends JFrame {
 	public static DefaultComboBoxModel getAssignments() {
 		return dcmAssignments;
 	}
-	/**
-	 * Launch the application.
-	 */
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					Assignment.initialize();
 					MainApp frame = new MainApp();
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -88,11 +97,7 @@ public class MainApp extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public MainApp() {
-		dcmSemester.addElement("");
 		dcmClasses.addElement("");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 674, 450);
@@ -108,7 +113,6 @@ public class MainApp extends JFrame {
 		JMenuItem menuSave = new JMenuItem("Save");
 		menuSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Saving..");
 				fileSave.setDialogTitle("Specify a file to save");  
 				FileNameExtensionFilter filter = new FileNameExtensionFilter("Object Save File", "sav");
 				fileSave.setFileFilter(filter);
@@ -307,7 +311,7 @@ public class MainApp extends JFrame {
 							CreateClass(param);
 						}
 						private void CreateClass(ArrayList<String> param) {
-							Class c = new Class(param.get(0), new ArrayList<TextBook>(), new ArrayList<Assignment>(), new Professor(param.get(1), param.get(2), param.get(3), param.get(4), param.get(5)), 0);
+							Class c = new Class(param.get(0), new ArrayList<TextBook>(), new ArrayList<Assignment>(), new Professor(param.get(1), param.get(2), param.get(3), param.get(4), param.get(5)));
 							((Semester)cmbSemester.getSelectedItem()).getClassName().add(c);
 							dcmClasses.addElement(c);
 						}
@@ -375,7 +379,7 @@ public class MainApp extends JFrame {
 		lblGpa.setBounds(476, 11, 89, 14);
 		contentPane.add(lblGpa);
 		
-		JLabel lblGPA = new JLabel("");
+		lblGPA = new JLabel("");
 		lblGPA.setBounds(591, 11, 46, 14);
 		contentPane.add(lblGPA);	
 		
@@ -512,7 +516,7 @@ public class MainApp extends JFrame {
 		lblTotalGpa.setBounds(476, 39, 89, 14);
 		contentPane.add(lblTotalGpa);
 		
-		JLabel lblTotGPA = new JLabel("0.0");
+		lblTotGPA = new JLabel("0.0");
 		lblTotGPA.setBounds(591, 39, 46, 14);
 		lblTotGPA.setText(Double.toString(calcTotGPA(semesters)));
 		contentPane.add(lblTotGPA);
@@ -632,6 +636,7 @@ public class MainApp extends JFrame {
 							((Class)cmbClasses.getSelectedItem()).getAssignments().remove(param);
 							dcmAssignments.removeElement(param);
 							lblGPA.setText(Double.toString(calcGPA(cmbClasses)));
+							lblTotGPA.setText(Double.toString(calcTotGPA(semesters)));
 						}
 					});
 					delClass.setVisible(true);
@@ -744,6 +749,22 @@ public class MainApp extends JFrame {
 		});
 		menuEdit.add(menuEditAssign);
 		
+		JMenuItem menuEditWeights = new JMenuItem("Edit Assignment Weights");
+		menuEditWeights.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (e.getSource() == menuEditWeights) {
+					EditWeights weights = new EditWeights(new Callback<Object>() {
+						public void call(Object param) {
+							lblTotGPA.setText(Double.toString(calcTotGPA(semesters)));
+							lblGPA.setText(Double.toString(calcGPA(cmbClasses)));
+						}
+					});
+					weights.setVisible(true);
+				}
+			}
+		});
+		menuEdit.add(menuEditWeights);
+		
 	
 		menuDeleteSem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -765,55 +786,78 @@ public class MainApp extends JFrame {
 		});
 		
 	}
+	/**
+	 * 
+	 * @param cb takes a JComboBox as an input, uses it to get all the assignment grades for that semester
+	 * @return returns the a double of the calculated GPA for the current semester
+	 */
+	//formula SUM(Grade * Weight) / SUM(WEIGHTS)
 	public double calcGPA(JComboBox cb) {
-		int count = 0;
 		double sum = 0;
+		double weightSum = 0;
 		for (int i = 0; i < cb.getItemCount(); i++) {
 			Class c = (Class)cb.getItemAt(i);
 			ArrayList<Assignment> a = c.getAssignments();
 			for (Assignment assign : a) {
-				sum += assign.getGrade();
-				count++;
+				sum += (assign.getWeight() * assign.getGrade());
+				weightSum += assign.getWeight();
 			}
 		}
-		if (sum == 0 || count == 0)
+		if (sum == 0 || weightSum == 0)
 			return 0.0;
-		return sum / count;
+		return sum / weightSum;
 	}
+	/**
+	 * 
+	 * @param s takes an array of semesters
+	 * @return returns a double by calculating total GPA, goes through each semester individually then searching for classes within that semester, then for each class
+	 * it checks for assignments and adds them up.
+	 */
 	public double calcTotGPA(ArrayList<Semester> s) {
 		double sum = 0;
-		int count = 0;
+		double weightSum = 0;
 		for (Semester sem : s) {
 			ArrayList<Class> classes = sem.getClassName();
 			for (Class c : classes) {
 				for (Assignment a : c.getAssignments()) {
-					sum += a.getGrade();
-					count++;
+					sum += (a.getWeight() * a.getGrade());
+					weightSum += a.getWeight();
 				}
 			}
 		}
-		if (sum == 0 || count == 0)
+		if (sum == 0 || weightSum == 0)
 			return 0.0;
-		return sum / count;
+		return sum / weightSum;
 	}
+	/**
+	 * Serializes all objects as well as assignment hashmap values
+	 * @param fileName takes a String and creates a .sav file based on the file specified by user
+	 */
 	public void save (String fileName) {
 		try{  
-			if (!fileName.endsWith(".sav")) // checks fo .sav exntesion
+			if (!fileName.endsWith(".sav")) // checks for .sav exntesion
 				fileName += ".sav";
 			FileOutputStream saveFile = new FileOutputStream(fileName);
 			ObjectOutputStream save = new ObjectOutputStream(saveFile);
 			save.writeObject(semesters);
+			save.writeObject(Assignment.weightValues); //Serialize the hashmap values
 			save.close(); 
 		}
 		catch(Exception e){
 			e.printStackTrace(); 
 		}
 	}
+	/**
+	 * Deserializes all objects as well as assignment hashmap values
+	 * @param fileName takes a String and loads a .sav file based on the one selected from JFileChooser
+	 */
 	public void load(String fileName) {
 		try {
 			FileInputStream saveFile = new FileInputStream(fileName);
 			ObjectInputStream save = new ObjectInputStream(saveFile);
 			ArrayList<Semester> s = (ArrayList<Semester>)save.readObject();	
+			HashMap<Assignment.AssignmentType, Double> weightValues = (HashMap<Assignment.AssignmentType, Double>)save.readObject();
+			Assignment.weightValues = weightValues;
 			semesters = s;
 			dcmSemester.removeAllElements();
 			dcmSemester.addElement("");
@@ -821,6 +865,7 @@ public class MainApp extends JFrame {
 				dcmSemester.addElement(z);
 			}
 			cmbSemester.setModel(dcmSemester);
+			lblTotGPA.setText(Double.toString(calcTotGPA(semesters)));
 			save.close(); 
 		}
 		catch(Exception e){

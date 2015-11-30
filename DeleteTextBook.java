@@ -19,7 +19,9 @@ public class DeleteTextBook extends JFrame {
 	private JPanel contentPane;
 
 	/**
-	 * Create the frame.
+	 * This class is responsible for deleting a textbook
+	 * @param callback creates a callback to the main frame if needed to pass information forward
+	 * 
 	 */
 	public DeleteTextBook(final Callback<Object> callback) {
 		DefaultComboBoxModel dcmClasses = MainApp.getClasses();

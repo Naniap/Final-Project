@@ -19,7 +19,9 @@ public class EditSemester extends JFrame {
 	private JTextField txtYear;
 
 	/**
-	 * Create the frame.
+	 * This class is responsible for editing a semester
+	 * @param callback creates a callback to the main frame if needed to pass information forward
+	 * 
 	 */
 	public EditSemester(final Callback<Object> callback) {
 		DefaultComboBoxModel dcmSemester = MainApp.getSemesters();
@@ -94,7 +96,6 @@ public class EditSemester extends JFrame {
 		if (cmbSemesters.getSelectedItem() instanceof Semester)
 		{
 			Semester s = (Semester)cmbSemesters.getSelectedItem();
-			System.out.println(s);
 			txtYear.setText(Integer.toString(s.getYear()));
 			cmbSeason.setSelectedItem(s.getSeasonName(((Semester)cmbSemesters.getSelectedItem()).getSeason()));
 		}

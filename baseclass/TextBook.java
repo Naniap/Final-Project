@@ -3,11 +3,15 @@ package baseclass;
 import java.io.Serializable;
 
 public class TextBook implements Serializable {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1721474050182922274L;
 	private String bookName, author, year, volume;
+	/**
+	 * 
+	 * @param bookName name of textbook
+	 * @param author author's name
+	 * @param year year of when the book was released
+	 * @param volume the volume
+	 */
 	public TextBook(String bookName, String author, String year, String volume) {
 		this.bookName = bookName;
 		this.author = author;

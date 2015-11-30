@@ -30,7 +30,9 @@ public class EditTextBook extends JFrame {
 	private JLabel lblTextbookSelection;
 
 	/**
-	 * Create the frame.
+	 * This class is responsible for editing a textbook
+	 * @param callback creates a callback to the main frame if needed to pass information forward
+	 * 
 	 */
 	public EditTextBook(final Callback<Object> callback) {
 		DefaultComboBoxModel dcmClasses = MainApp.getClasses();

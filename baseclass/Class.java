@@ -3,21 +3,24 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Class implements Serializable {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -2338921038578165349L;
 	private String className;
 	private ArrayList<TextBook> textBooks;
 	private ArrayList<Assignment> assignments;
 	private Professor professor;
 	private int totalGrade;
-	public Class(String className, ArrayList<TextBook> textBooks, ArrayList<Assignment> assignments, Professor professor, int totalGrade){
+	/**
+	 * 
+	 * @param className name of the class
+	 * @param textBooks each class contains an arraylist of textbooks with publisher information
+	 * @param assignments each class contains an arraylist of assignments with relevant information to each assignment
+	 * @param professor is an object which contains all information related to a professor
+	 */
+	public Class(String className, ArrayList<TextBook> textBooks, ArrayList<Assignment> assignments, Professor professor){
 		this.className = className;
 		this.textBooks = textBooks;
 		this.assignments = assignments;
 		this.professor = professor;
-		this.totalGrade = totalGrade;
 		}
 	public String getClassName() {
 		return className;
@@ -45,9 +48,6 @@ public class Class implements Serializable {
 	}
 	public int getTotalGrade() {
 		return totalGrade;
-	}
-	public void setTotalGrade(int totalGrade) {
-		this.totalGrade = totalGrade;
 	}
 	public String toString() {
 		return className;

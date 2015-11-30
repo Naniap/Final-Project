@@ -21,7 +21,9 @@ public class CreateTextbook extends JFrame {
 	private JTextField txtBookVolume;
 	private JTextField txtBookAuthor;
 	/**
-	 * Create the frame.
+	 * This class is responsible for creating a textbook, and is responsible for passing information to the main frame to create an object
+	 * @param callback creates a callback to the main frame if needed to pass information forward
+	 * 
 	 */
 	public CreateTextbook(final Callback<ArrayList<String>> callback) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

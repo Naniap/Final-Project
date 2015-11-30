@@ -25,7 +25,9 @@ public class EditClass extends JFrame {
 	private JTextField txtProfHours;
 	private JTextField txtProfPhone;
 	/**
-	 * Create the frame.
+	 * This class is responsible for editing a class
+	 * @param callback creates a callback to the main frame if needed to pass information forward
+	 * 
 	 */
 	public EditClass(final Callback<Object> callback) {
 		DefaultComboBoxModel dcmSemester = MainApp.getSemesters();

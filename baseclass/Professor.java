@@ -3,16 +3,20 @@ package baseclass;
 import java.io.Serializable;
 
 public class Professor implements Serializable {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -7877224401425966336L;
 	private String name;
 	private String email;
 	private String office;
 	private String officeHours;
 	private String phoneNumber;
-	
+	/**
+	 * 
+	 * @param name professor's name
+	 * @param email professor's email
+	 * @param office professor's office location
+	 * @param officeHours professor's office hours
+	 * @param phoneNumber professor's phone number
+	 */
 	public Professor(String name, String email, String office, String officeHours, String phoneNumber) {
 		this.name = name;
 		this.email = email;

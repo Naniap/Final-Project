@@ -3,9 +3,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Semester implements Serializable {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -5379177481588314773L;
 	public enum Season {
 		SPRING,
@@ -16,7 +13,12 @@ public class Semester implements Serializable {
 	private int year;
 	private ArrayList<Class> className;
 	private Season season;
-	
+	/**
+	 * 
+	 * @param className each semester contains an arraylist of classes
+	 * @param year semester year
+	 * @param season semester season, spring, winter, fall, summer
+	 */
 	public Semester(ArrayList<Class> className, int year, Season season){
 		this.className = className;
 		this.year = year;

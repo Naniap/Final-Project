@@ -19,7 +19,9 @@ public class DeleteClass extends JFrame {
 	private JPanel contentPane;
 
 	/**
-	 * Create the frame.
+	 * This class is responsible for deleting a class
+	 * @param callback creates a callback to the main frame if needed to pass information forward
+	 * 
 	 */
 	public DeleteClass(final Callback<Object> callback) {
 		DefaultComboBoxModel dcmClasses = MainApp.getClasses();
