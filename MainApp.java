@@ -99,6 +99,7 @@ public class MainApp extends JFrame {
 
 	public MainApp() {
 		dcmClasses.addElement("");
+		dcmSemester.addElement("");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 674, 450);
 		

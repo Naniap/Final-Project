@@ -11,6 +11,7 @@ import baseclass.Assignment.AssignmentType;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -26,8 +27,9 @@ public class EditWeights extends JFrame {
 	 * Create the frame.
 	 */
 	public EditWeights(final Callback<Object> callback) {
+		DefaultComboBoxModel dcmAssign = MainApp.getAssignments();
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 274, 216);
+		setBounds(100, 100, 287, 214);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
