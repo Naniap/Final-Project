@@ -8,7 +8,6 @@ public class Class implements Serializable {
 	private ArrayList<TextBook> textBooks;
 	private ArrayList<Assignment> assignments;
 	private Professor professor;
-	private int totalGrade;
 	/**
 	 * 
 	 * @param className name of the class
@@ -45,9 +44,6 @@ public class Class implements Serializable {
 	}
 	public void setProfessor(Professor professor) {
 		this.professor = professor;
-	}
-	public int getTotalGrade() {
-		return totalGrade;
 	}
 	public String toString() {
 		return className;
