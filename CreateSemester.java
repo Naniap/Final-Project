@@ -6,6 +6,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.GridBagConstraints;
 import javax.swing.JTextArea;
 import java.awt.Insets;
@@ -71,7 +73,12 @@ public class CreateSemester extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == btnSubmitSemester) {
 					ArrayList<String> data = new ArrayList<String>();
-					data.add(txtYear.getText());
+					if (Validation.isInteger(txtYear.getText()))
+						data.add(txtYear.getText());
+					else {
+						JOptionPane.showMessageDialog(contentPane, "Please enter a valid year (integers only)");
+						return;
+					}
 					data.add(cmbSeason.getSelectedItem().toString());
 					callback.call(data);
 					dispose();

@@ -9,6 +9,7 @@ import baseclass.Assignment;
 import baseclass.Assignment.AssignmentType;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
@@ -82,10 +83,16 @@ public class EditWeights extends JFrame {
 		JButton btnSubmit = new JButton("Submit");
 		btnSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Assignment.weightValues.put(Assignment.AssignmentType.QUIZ, Double.parseDouble(txtQuiz.getText()));
-				Assignment.weightValues.put(Assignment.AssignmentType.INCLASS, Double.parseDouble(txtInClass.getText()));
-				Assignment.weightValues.put(Assignment.AssignmentType.EXAM, Double.parseDouble(txtExam.getText()));
-				Assignment.weightValues.put(Assignment.AssignmentType.HW, Double.parseDouble(txtHW.getText()));
+				if (Validation.isDouble(txtQuiz.getText()) && Validation.isDouble(txtInClass.getText()) && Validation.isDouble(txtExam.getText()) && Validation.isDouble(txtHW.getText())) {
+					Assignment.weightValues.put(Assignment.AssignmentType.QUIZ, Double.parseDouble(txtQuiz.getText()));
+					Assignment.weightValues.put(Assignment.AssignmentType.INCLASS, Double.parseDouble(txtInClass.getText()));
+					Assignment.weightValues.put(Assignment.AssignmentType.EXAM, Double.parseDouble(txtExam.getText()));
+					Assignment.weightValues.put(Assignment.AssignmentType.HW, Double.parseDouble(txtHW.getText()));
+				}
+				else {
+					JOptionPane.showMessageDialog(contentPane, "Please enter a valid weights (integer-only or double only)");
+					return;
+				}
 				callback.call("");
 				dispose();
 			}

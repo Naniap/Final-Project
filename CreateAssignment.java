@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 import baseclass.Assignment;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.DefaultComboBoxModel;
@@ -106,7 +107,12 @@ public class CreateAssignment extends JFrame {
 					data.add(txtAssignName.getText());
 					data.add(txtAssignDate.getText());
 					data.add(txtAssignDue.getText());
-					data.add(txtAssignGrade.getText());
+					if (Validation.isDouble(txtAssignGrade.getText()))
+						data.add(txtAssignGrade.getText());
+					else {
+						JOptionPane.showMessageDialog(contentPane, "Please enter a valid grade (Integer/Doubles only)");
+						return;
+					}
 					data.add(cmbAssignType.getSelectedItem().toString());
 					callback.call(data);
 					dispose();

@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JTextField;
@@ -141,7 +142,12 @@ public class EditAssignment extends JFrame {
 					a.setAssignedDate(txtAssignDate.getText());
 					a.setAssignmentType(Assignment.AssignmentType.valueOf((String)cmbAssignType.getSelectedItem()));
 					a.setDueDate(txtDueDate.getText());
-					a.setGrade(Double.parseDouble(txtGrade.getText()));
+					if (Validation.isDouble(txtGrade.getText()))
+						a.setGrade(Double.parseDouble(txtGrade.getText()));
+					else {
+						JOptionPane.showMessageDialog(contentPane, "Please enter a valid grade (integer-only or double only)");
+						return;
+					}
 					a.setName(txtName.getText());
 					callback.call(cmbAssign.getSelectedItem());
 					dispose();

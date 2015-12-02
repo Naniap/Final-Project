@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -73,7 +74,12 @@ public class EditSemester extends JFrame {
 				{
 					Semester s = (Semester)cmbSemesters.getSelectedItem();
 					s.setSeason(Semester.Season.valueOf(cmbSeason.getSelectedItem().toString().toUpperCase()));
-					s.setYear(Integer.parseInt(txtYear.getText()));
+					if (Validation.isInteger(txtYear.getText()))
+						s.setYear(Integer.parseInt(txtYear.getText()));
+					else {
+						JOptionPane.showMessageDialog(contentPane, "Please enter a valid year (integers only)");
+						return;
+					}
 					dispose();
 				}
 			}

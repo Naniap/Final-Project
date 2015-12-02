@@ -582,7 +582,6 @@ public class MainApp extends JFrame {
 						}
 						private void CreateAssignment(ArrayList<String> param) {
 							Class c = ((Class)cmbClasses.getSelectedItem());
-							
 							Assignment a = new Assignment(param.get(0), param.get(1), param.get(2), Double.parseDouble(param.get(3)), Assignment.AssignmentType.valueOf(param.get(4)));
 							c.getAssignments().add(a);
 							dcmAssignments.addElement(a);
