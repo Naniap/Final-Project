@@ -64,6 +64,7 @@ public class MainApp extends JFrame {
 	private JTextField txtGrade;
 	private JLabel lblTotGPA;
 	private JLabel lblGPA;
+	
 	public static DefaultComboBoxModel getSemesters() {
 		return dcmSemester;
 	}
@@ -81,9 +82,16 @@ public class MainApp extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					int result = -5; //arbitrary number that does not represent JOptionPane.OK_OPTION
 					Assignment.initialize();
 					MainApp frame = new MainApp();
+					//load default data
 					frame.setVisible(true);
+					if (frame.fileExists("default.sav"))
+						result = JOptionPane.showConfirmDialog(frame, "I found a default configuration, would you like to load the default configuration?", "Loading", JOptionPane.YES_NO_OPTION);
+					if (result == JOptionPane.OK_OPTION) {
+						frame.load("default.sav");
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -103,7 +111,28 @@ public class MainApp extends JFrame {
 		JMenu menuFile = new JMenu("File");
 		menuBar.add(menuFile);
 		
-		JFileChooser fileSave = new JFileChooser(".");
+		//Got this override from stack overflow: http://stackoverflow.com/questions/3651494/jfilechooser-with-confirmation-dialog
+		JFileChooser fileSave = new JFileChooser(".") {
+		    @Override
+		    public void approveSelection(){
+		        File f = getSelectedFile();
+		        if(f.exists() && getDialogType() == SAVE_DIALOG){
+		            int result = JOptionPane.showConfirmDialog(this, "The file exists, overwrite?","Existing file", JOptionPane.YES_NO_CANCEL_OPTION);
+		            switch(result){
+		                case JOptionPane.YES_OPTION:
+		                    super.approveSelection();
+		                    return;
+		                case JOptionPane.NO_OPTION:
+		                    return;
+		                case JOptionPane.CLOSED_OPTION:
+		                    return;
+		                case JOptionPane.CANCEL_OPTION:
+		                    cancelSelection();
+		                    return;
+		            }
+		        }
+		        super.approveSelection();   
+		    }};
 		
 		JMenuItem menuSave = new JMenuItem("Save");
 		menuSave.addActionListener(new ActionListener() {
@@ -865,5 +894,12 @@ public class MainApp extends JFrame {
 		catch(Exception e){
 			e.printStackTrace(); 
 		}
+	}
+	public boolean fileExists(String fileName) {
+		File f = new File(fileName);
+		if (f.exists() && !f.isDirectory())
+			return true;
+		
+		return false;
 	}
 }

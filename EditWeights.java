@@ -86,7 +86,7 @@ public class EditWeights extends JFrame {
 					Assignment.weightValues.put(Assignment.AssignmentType.HW, Double.parseDouble(txtHW.getText()));
 				}
 				else {
-					JOptionPane.showMessageDialog(contentPane, "Please enter a valid weights (integer-only or double only)");
+					JOptionPane.showMessageDialog(contentPane, "Please enter valid weights (integer or double only)");
 					return;
 				}
 				callback.call("");

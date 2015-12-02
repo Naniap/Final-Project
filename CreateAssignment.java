@@ -105,7 +105,7 @@ public class CreateAssignment extends JFrame {
 					if (Validation.isDouble(txtAssignGrade.getText()))
 						data.add(txtAssignGrade.getText());
 					else {
-						JOptionPane.showMessageDialog(contentPane, "Please enter a valid grade (Integer/Doubles only)");
+						JOptionPane.showMessageDialog(contentPane, "Please enter a valid grade (integers or doubles only)");
 						return;
 					}
 					data.add(cmbAssignType.getSelectedItem().toString());

@@ -142,7 +142,7 @@ public class EditAssignment extends JFrame {
 					if (Validation.isDouble(txtGrade.getText()))
 						a.setGrade(Double.parseDouble(txtGrade.getText()));
 					else {
-						JOptionPane.showMessageDialog(contentPane, "Please enter a valid grade (integer-only or double only)");
+						JOptionPane.showMessageDialog(contentPane, "Please enter a valid grade (integer or double only)");
 						return;
 					}
 					a.setName(txtName.getText());
