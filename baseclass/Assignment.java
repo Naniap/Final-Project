@@ -1,6 +1,5 @@
 package baseclass;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.HashMap;
 
 public class Assignment implements Serializable {
